@@ -1,5 +1,27 @@
-labels in gcp for AlloyDB
-simple way to add labels to AlloyDB clusters and AlloyDB Instances is through gcloud setup + alloydb.googleapis.com api. 
+Labels in gcp for AlloyDB
+Labels help organize your instances. For example, you can organize labels by cost center or environment. Labels are also included in your bill, so you can see the distribution of costs across your labels.
+
+Simple way to add labels to AlloyDB clusters and AlloyDB Instances is through gcloud setup + alloydb.googleapis.com api. 
 
 Run the below commands to update labels for AlloyDB resources 
+-- create this file as per your org requirements test_withkeyvalue.json
+{
+  "labels": {
+    "yourkey": "yourvalue"
+  }
+}
 
+-- for instances | make sure to add "-primary" or "-readpool" if you have that in your instance names.
+curl -X PATCH   -H "Authorization: Bearer $(gcloud auth print-access-token)"   -H "Content-Type: application/json"   -d @test_withkeyvalue.json   "https://alloydb.googleapis.com/v1/projects/<projectname>/locations/<location-name>/clusters/<clustername>/instances/<instancename>?updateMask=labels"
+
+-- for clusters 
+curl -X PATCH   -H "Authorization: Bearer $(gcloud auth print-access-token)"   -H "Content-Type: application/json"   -d @test_withkeyvalue.json   "https://alloydb.googleapis.com/v1/projects/<projectname>/locations/<location-name>/clusters/<clustername>?updateMask=labels" 
+
+-- project labels
+needs different level permissions to update these. 
+
+-- Validation 
+You can see these labels in gcp UI under Clusters List and in the Labels column.
+
+-- Notes
+Adding labels to instances is the way to capture true costs for CPU and RAM, which are the major cost contributors. Adding just project + cluster will not help to capture cost at each db. 
