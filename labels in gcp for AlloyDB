@@ -1,0 +1,5 @@
+labels in gcp for AlloyDB
+simple way to add labels to AlloyDB clusters and AlloyDB Instances is through gcloud setup + alloydb.googleapis.com api. 
+
+Run the below commands to update labels for AlloyDB resources 
+
